@@ -13,9 +13,9 @@
   ],
   "module": "dist/index.js",
   "files": [
-    "dist",
     "CHANGELOG.md",
-    "README.md"
+    "README.md",
+    "dist"
   ],
   "scripts": {
     "build": "tsup",

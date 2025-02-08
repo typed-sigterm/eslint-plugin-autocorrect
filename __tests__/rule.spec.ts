@@ -1,6 +1,6 @@
+import { test } from 'bun:test';
 import { RuleTester } from 'eslint';
 import { rule } from '../src/rule';
-import { test } from 'bun:test';
 
 const tester = new RuleTester();
 

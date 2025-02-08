@@ -1,8 +1,7 @@
-import type { SourceCode } from 'eslint';
+import type { ESLint, SourceCode } from 'eslint';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { initSync, lintFor } from 'autocorrect-wasm';
-import type { ESLint } from 'eslint';
 
 type Rule = Exclude<ESLint.Plugin['rules'], undefined>[string];
 
@@ -46,7 +45,7 @@ const rule: Rule = {
               start: { line: line.l, column: 0 },
               end: { line: line.l, column: line.old.length },
             },
-            fix: (f) => f.replaceTextRange(
+            fix: f => f.replaceTextRange(
               [sourceCode.getIndexFromLoc(start), sourceCode.getIndexFromLoc(end)],
               line.new,
             ),
