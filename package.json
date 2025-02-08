@@ -20,7 +20,7 @@
   "scripts": {
     "build": "tsup",
     "lint": "eslint .",
-    "prepare": "husky"
+    "prepare": "bunx husky"
   },
   "peerDependencies": {
     "eslint": ">= 9.0.0"
