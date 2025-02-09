@@ -12,10 +12,20 @@ interface LintResult {
     c: number
     old: string
     new: string
-    serverity: number
+    serverity: Severity
   }>
   error: string
 }
+
+enum Severity {
+  Pass = 0,
+  Error = 1,
+  Warning = 2,
+}
+
+const wasmUrl = import.meta.resolve('autocorrect-wasm/autocorrect_wasm_bg.wasm');
+const wasm = readFileSync(fileURLToPath(wasmUrl));
+initSync(wasm);
 
 const rule: Rule = {
   meta: {
@@ -23,36 +33,34 @@ const rule: Rule = {
     fixable: 'whitespace',
     schema: [],
     messages: {
-      issue: 'Issue detected',
+      error: 'Autocorrect error detected',
+      warning: 'Autocorrect warning detected',
+    },
+    docs: {
+      recommended: true,
     },
   },
   create(ctx) {
-    const wasmUrl = import.meta.resolve('autocorrect-wasm/autocorrect_wasm_bg.wasm');
-    const wasm = readFileSync(fileURLToPath(wasmUrl));
-    initSync(wasm);
-
     const sourceCode = ctx.sourceCode as SourceCode;
-    return {
-      Program() {
-        const res: LintResult = lintFor(sourceCode.getText(), ctx.filename ?? '');
-        for (const line of res.lines) {
-          const start = { line: line.l, column: line.c - 1 };
-          const end = { line: line.l, column: line.c - 1 + line.old.length };
+    const res: LintResult = lintFor(sourceCode.getText(), ctx.filename ?? '');
 
-          ctx.report({
-            messageId: 'issue',
-            loc: {
-              start: { line: line.l, column: 0 },
-              end: { line: line.l, column: line.old.length },
-            },
-            fix: f => f.replaceTextRange(
-              [sourceCode.getIndexFromLoc(start), sourceCode.getIndexFromLoc(end)],
-              line.new,
-            ),
-          });
-        }
-      },
+    for (const line of res.lines) {
+      const start = { line: line.l, column: line.c - 1 };
+      const end = { line: line.l, column: line.c - 1 + line.old.length };
+      ctx.report({
+        messageId: line.serverity === Severity.Error ? 'error' : 'warning',
+        loc: {
+          start: { line: line.l, column: 0 },
+          end: { line: line.l, column: line.old.length },
+        },
+        fix: f => f.replaceTextRange(
+          [sourceCode.getIndexFromLoc(start), sourceCode.getIndexFromLoc(end)],
+          line.new,
+        ),
+      });
     };
+
+    return {};
   },
 };
 

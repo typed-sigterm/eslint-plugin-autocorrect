@@ -1,11 +1,11 @@
 import { test } from 'bun:test';
 import { RuleTester } from 'eslint';
-import { rule } from '../src/rule';
+import correct from '../src/rule';
 
 const tester = new RuleTester();
 
 test('rule', () => {
-  tester.run('rule', rule, {
+  tester.run('rule', correct, {
     valid: [{
       filename: '.js',
       code: 'f("Hello 世界")',
