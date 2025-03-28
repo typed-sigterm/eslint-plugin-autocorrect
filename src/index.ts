@@ -1,15 +1,15 @@
 import type { ESLint } from 'eslint';
 import { version } from '../package.json';
-import correct from './rule';
+import issue from './rule';
 
-const plugin: ESLint.Plugin = {
+const plugin = {
   meta: {
     name: 'autocorrect',
     version,
   },
   rules: {
-    correct,
+    issue,
   },
-};
+} satisfies ESLint.Plugin;
 
 export default plugin;

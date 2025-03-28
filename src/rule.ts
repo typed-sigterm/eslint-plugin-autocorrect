@@ -8,18 +8,19 @@ loadConfig(getConfig());
 
 const ignorer = getIgnorer();
 
-const rule: Rule = {
+const rule = {
   meta: {
     type: 'layout',
     fixable: 'whitespace',
     schema: [],
     messages: {
-      issue: 'Autocorrect issue detected',
+      issue: 'Spaces required',
     },
     docs: {
       recommended: true,
     },
   },
+
   create(ctx) {
     const sourceCode = ctx.sourceCode as SourceCode;
     if (!('getText' in sourceCode) || !('getIndexFromLoc' in sourceCode))
@@ -33,10 +34,7 @@ const rule: Rule = {
       const end = { line: line.l, column: line.c - 1 + line.old.length };
       ctx.report({
         messageId: 'issue',
-        loc: {
-          start: { line: line.l, column: 0 },
-          end: { line: line.l, column: line.old.length },
-        },
+        loc: { start, end },
         fix: f => f.replaceTextRange(
           [sourceCode.getIndexFromLoc(start), sourceCode.getIndexFromLoc(end)],
           line.new,
@@ -46,6 +44,6 @@ const rule: Rule = {
 
     return {};
   },
-};
+} satisfies Rule;
 
 export default rule;

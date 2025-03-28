@@ -1,16 +1,12 @@
 import ts from '@typed-sigterm/eslint-config';
 import plugin from 'eslint-plugin-eslint-plugin';
+import autocorrect from './dist/index.js';
 
 export default ts({
-  jsonc: true,
-  markdown: true,
-  stylistic: true,
-  toml: true,
-  typescript: true,
-  vue: true,
-}, plugin.configs['flat/recommended'], {
-  files: ['playground/**'],
-  rules: {
-    'no-console': [0],
+  plugins: {
+    autocorrect,
   },
-});
+  rules: {
+    'autocorrect/issue': [2],
+  },
+}, plugin.configs['flat/recommended']);
