@@ -1,31 +1,12 @@
 import type { ESLint, SourceCode } from 'eslint';
-import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { initSync, lintFor } from 'autocorrect-wasm';
+import { lintFor, loadConfig } from 'autocorrect-node';
+import { getConfig, getIgnorer } from './config';
 
 type Rule = Exclude<ESLint.Plugin['rules'], undefined>[string];
 
-interface LintResult {
-  filepath: string
-  lines: Array<{
-    l: number
-    c: number
-    old: string
-    new: string
-    serverity: Severity
-  }>
-  error: string
-}
+loadConfig(getConfig());
 
-enum Severity {
-  Pass = 0,
-  Error = 1,
-  Warning = 2,
-}
-
-const wasmUrl = import.meta.resolve('autocorrect-wasm/autocorrect_wasm_bg.wasm');
-const wasm = readFileSync(fileURLToPath(wasmUrl));
-initSync(wasm);
+const ignorer = getIgnorer();
 
 const rule: Rule = {
   meta: {
@@ -33,8 +14,7 @@ const rule: Rule = {
     fixable: 'whitespace',
     schema: [],
     messages: {
-      error: 'Autocorrect error detected',
-      warning: 'Autocorrect warning detected',
+      issue: 'Autocorrect issue detected',
     },
     docs: {
       recommended: true,
@@ -42,13 +22,17 @@ const rule: Rule = {
   },
   create(ctx) {
     const sourceCode = ctx.sourceCode as SourceCode;
-    const res: LintResult = lintFor(sourceCode.getText(), ctx.filename ?? '');
+    if (!('getText' in sourceCode) || !('getIndexFromLoc' in sourceCode))
+      return {};
+    if (ignorer.isIgnored(ctx.filename))
+      return {};
+    const res = lintFor(sourceCode.getText(), ctx.filename);
 
     for (const line of res.lines) {
       const start = { line: line.l, column: line.c - 1 };
       const end = { line: line.l, column: line.c - 1 + line.old.length };
       ctx.report({
-        messageId: line.serverity === Severity.Error ? 'error' : 'warning',
+        messageId: 'issue',
         loc: {
           start: { line: line.l, column: 0 },
           end: { line: line.l, column: line.old.length },
