@@ -14,7 +14,7 @@ const rule = {
     fixable: 'whitespace',
     schema: [],
     messages: {
-      issue: 'Spaces required',
+      issue: 'Correct it',
     },
     docs: {
       recommended: true,

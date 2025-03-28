@@ -1,8 +1,9 @@
 {
   "name": "eslint-plugin-autocorrect",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Integrates Autocorrect into ESLint.",
+  "license": "MIT",
   "repository": {
     "url": "https://github.com/typed-sigterm/eslint-plugin-autocorrect"
   },
@@ -16,13 +17,13 @@
   "types": "dist/index.d.ts",
   "files": [
     "CHANGELOG.md",
+    "LICENSE",
     "README.md",
     "dist"
   ],
   "scripts": {
     "build": "tsup",
-    "lint": "eslint .",
-    "prepare": "bunx husky"
+    "lint": "eslint ."
   },
   "peerDependencies": {
     "eslint": ">= 9.0.0"

@@ -7,8 +7,8 @@ Integrate [AutoCorrect](https://github.com/huacnlee/autocorrect) with ESLint.
 Install `eslint-plugin-autocorrect` using your package manager, and add this to `eslint.config.js`:
 
 ```js
-import { defineConfig } from 'eslint/config';
 import autocorrect from 'eslint-plugin-autocorrect';
+import { defineConfig } from 'eslint/config';
 
 export default defineConfig([
   {
