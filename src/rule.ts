@@ -1,5 +1,6 @@
 import type { ESLint, SourceCode } from 'eslint';
 import { lintFor, loadConfig } from 'autocorrect-node';
+import { version } from '../package.json';
 import { getConfig, getIgnorer } from './config';
 
 type Rule = Exclude<ESLint.Plugin['rules'], undefined>[string];
@@ -18,8 +19,9 @@ const rule = {
     },
     docs: {
       recommended: true,
+      url: `https://github.com/typed-sigterm/eslint-plugin-autocorrect/blob/v${version}/README.md#usage`,
     },
-  },
+  } as const,
 
   create(ctx) {
     const sourceCode = ctx.sourceCode as SourceCode;
