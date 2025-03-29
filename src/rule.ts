@@ -14,9 +14,6 @@ const rule = {
     type: 'layout',
     fixable: 'whitespace',
     schema: [],
-    messages: {
-      issue: 'Correct it',
-    },
     docs: {
       recommended: true,
       url: `https://github.com/typed-sigterm/eslint-plugin-autocorrect/blob/v${version}/README.md#usage`,
@@ -35,7 +32,7 @@ const rule = {
       const start = { line: line.l, column: line.c - 1 };
       const end = { line: line.l, column: line.c - 1 + line.old.length };
       ctx.report({
-        messageId: 'issue',
+        message: line.new,
         loc: { start, end },
         fix: f => f.replaceTextRange(
           [sourceCode.getIndexFromLoc(start), sourceCode.getIndexFromLoc(end)],
