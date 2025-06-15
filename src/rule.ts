@@ -1,9 +1,7 @@
-import type { ESLint, SourceCode } from 'eslint';
+import type { Rule, SourceCode } from 'eslint';
 import { lintFor, loadConfig } from 'autocorrect-node';
 import { version } from '../package.json';
 import { getConfig, getIgnorer } from './config';
-
-type Rule = Exclude<ESLint.Plugin['rules'], undefined>[string];
 
 loadConfig(getConfig());
 
@@ -58,6 +56,6 @@ const rule = {
 
     return {};
   },
-} satisfies Rule;
+} satisfies Rule.RuleModule;
 
 export default rule;

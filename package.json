@@ -13,9 +13,13 @@
     "eslint-plugin",
     "autocorrect"
   ],
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "exports": {
+    ".": "./dist/index.js",
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "files": [
     "CHANGELOG.md",
     "LICENSE",
@@ -23,7 +27,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
+    "build": "tsdown",
     "lint": "eslint ."
   },
   "peerDependencies": {
@@ -42,7 +46,7 @@
     "eslint": "^9.28.0",
     "eslint-plugin-eslint-plugin": "^6.4.0",
     "husky": "^9.1.7",
-    "tsup": "^8.5.0",
+    "tsdown": "^0.12.7",
     "typescript": "^5.8.3"
   },
   "publishConfig": {
