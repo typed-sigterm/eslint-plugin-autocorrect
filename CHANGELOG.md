@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0 (2025-06-15)
+
+### 🚀 Features
+
+- Support using the corrected text as the message
+- Improve types
+
 ## 0.2.0 (2025-03-28)
 
 ### ⚠️ Breaking Changes

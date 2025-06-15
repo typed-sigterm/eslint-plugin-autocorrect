@@ -1,7 +1,7 @@
 {
   "name": "eslint-plugin-autocorrect",
   "type": "module",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Integrates Autocorrect into ESLint.",
   "author": "Typed SIGTERM",
   "license": "MIT",
