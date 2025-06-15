@@ -12,7 +12,17 @@ const rule = {
   meta: {
     type: 'layout',
     fixable: 'whitespace',
-    schema: [],
+    schema: [{
+      type: 'object',
+      properties: {
+        messageStyle: {
+          type: 'string',
+          enum: ['correct', 'default'],
+          default: 'correct',
+        },
+      },
+      additionalProperties: false,
+    }],
     docs: {
       recommended: true,
     },
@@ -24,13 +34,18 @@ const rule = {
       return {};
     if (ignorer.isIgnored(ctx.filename))
       return {};
+
+    const ruleOptions: any = ctx.options[0] || {};
+    const messageStyle = ruleOptions.messageStyle || 'new';
+
     const res = lintFor(sourceCode.getText(), ctx.filename);
 
     for (const line of res.lines) {
       const start = { line: line.l, column: line.c - 1 };
       const end = { line: line.l, column: line.c - 1 + line.old.length };
+
       ctx.report({
-        message: line.new,
+        message: messageStyle === 'correct' ? line.new : 'Correct it',
         loc: { start, end },
         fix: f => f.replaceTextRange(
           [sourceCode.getIndexFromLoc(start), sourceCode.getIndexFromLoc(end)],

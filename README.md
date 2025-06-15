@@ -2,6 +2,8 @@
 
 Integrate [AutoCorrect](https://github.com/huacnlee/autocorrect) with ESLint.
 
+The plugin requires eslint >= 9.
+
 ## Usage
 
 Install `eslint-plugin-autocorrect` using your package manager, and add this to `eslint.config.js`:
@@ -24,4 +26,25 @@ export default defineConfig([
 
 The plugin provides a single rule `autocorrect/issue` to report issues found by AutoCorrect, and auto-fixes.
 
-The plugin requires eslint >= 9.
+### Options
+
+The `autocorrect/issue` rule accepts an optional object with the following properties:
+
+- `messageStyle`: Configures the style of the error message.
+    - `"default"` (default): Shows "Correct it" as the message.
+    - `"correct"`: Shows the corrected text as the message.
+
+Example configuration:
+
+```js
+export default defineConfig([
+  {
+    plugins: {
+      autocorrect,
+    },
+    rules: {
+      'autocorrect/issue': ['error', { messageStyle: 'correct' }],
+    },
+  },
+]);
+```
