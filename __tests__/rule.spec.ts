@@ -52,3 +52,20 @@ it('should respect .autocorrectignore', () => tester.run('rule', correct, {
 
   invalid: [],
 }));
+
+it('should work w/ messageStyle option', () => tester.run('rule', correct, {
+  valid: [],
+  invalid: [{
+    filename: '.js',
+    code: 'console.log("Hello世界")',
+    options: [{ messageStyle: 'correct' }],
+    errors: [{ message: '"Hello 世界"' }],
+    output: 'console.log("Hello 世界")',
+  }, {
+    filename: '.js',
+    code: 'console.log("Hello世界")',
+    options: [{ messageStyle: 'default' }],
+    errors: [{ message: 'Correct it' }],
+    output: 'console.log("Hello 世界")',
+  }],
+}));
